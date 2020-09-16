@@ -19,19 +19,6 @@ async def create_task(request: web.Request) -> web.json_response:
 
     insert_id = 0 if len(request.app['db']['tasks']) < 1 else max([ task.get('id') for task in request.app['db']['tasks'] ])
 
-
-    # 'id': i,
-    # 'create_date': date,
-    # 'update_date': date,
-    # 'description': fake.name(),
-    # 'status': '1',
-    # 'optionalMinutes': optionalMinutes,
-    # 'optionalSeconds': 0,
-    # 'status_time': time_complete,
-    # 'status_task': status_task,
-    # 'duration': 0,
-    # 'to_play': optionalMinutes - time_complete,
-
     task['id'] = insert_id + 1
     tasks = request.app['db']['tasks'].append({
         'id': task.get('id'),
@@ -89,7 +76,21 @@ async def update_task(request: web.Request) -> web.json_response:
 
     for index, task_db in enumerate(tasks_db):
         if task_db.get('id') == task.get('id'):
-            tasks_db[index] = task
+            tasks_db[index] = {
+                'id': task.get('id'),
+                'create_date': tasks_db[index].get('create_date'),
+                'update_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'description': task.get('description'),
+                'status': '1',
+                'optionalMinutes': int(task.get('optionalMinutes')),
+                'optionalSeconds': int(task.get('optionalSeconds')),
+                'status_time': int(task.get('status_time')),
+                'status_task': task.get('status_task'),
+                'duration': int(task.get('duration')),
+                'to_play': int(task.get('to_play')),
+            }
+
+            break
 
     return web.json_response({
         'ok': True,
