@@ -8,4 +8,4 @@ api:
     host: localhost
     port: 8080
 headers:
-    origin: http://localhost:4200
+    origin: https://api.productivity.researchdev.xyz
