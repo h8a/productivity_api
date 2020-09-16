@@ -1,4 +1,5 @@
 from aiohttp import web
+from datetime import datetime
 
 
 async def task_type(request: web.Request) -> web.json_response:
@@ -18,8 +19,33 @@ async def create_task(request: web.Request) -> web.json_response:
 
     insert_id = 0 if len(request.app['db']['tasks']) < 1 else max([ task.get('id') for task in request.app['db']['tasks'] ])
 
+
+    # 'id': i,
+    # 'create_date': date,
+    # 'update_date': date,
+    # 'description': fake.name(),
+    # 'status': '1',
+    # 'optionalMinutes': optionalMinutes,
+    # 'optionalSeconds': 0,
+    # 'status_time': time_complete,
+    # 'status_task': status_task,
+    # 'duration': 0,
+    # 'to_play': optionalMinutes - time_complete,
+
     task['id'] = insert_id + 1
-    tasks = request.app['db']['tasks'].append(task)
+    tasks = request.app['db']['tasks'].append({
+        'id': task.get('id'),
+        'create_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'update_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'description': task.get('description'),
+        'status': '1',
+        'optionalMinutes': int(task.get('optionalMinutes')),
+        'optionalSeconds': int(task.get('optionalSeconds')),
+        'status_time': int(task.get('status_time')),
+        'status_task': 'create',
+        'duration': int(task.get('duration')),
+        'to_play': int(task.get('to_play')),
+    })
 
     return web.json_response({
         'ok': True,

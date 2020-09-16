@@ -50,11 +50,10 @@ async def generate_random_data(app):
         else:
             time_complete = int((100 * optionalMinutes) / 100.0)
 
-        if (timedelta == 0){
+        if timedelta == 0:
             status_task = 'complete'
-        } else {
+        else:
             status_task = 'stop'
-        }
 
         app['db']['tasks'].append({
             'id': i,
@@ -67,4 +66,5 @@ async def generate_random_data(app):
             'status_time': time_complete,
             'status_task': status_task,
             'duration': 0,
+            'to_play': optionalMinutes - time_complete,
         })
