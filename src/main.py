@@ -10,9 +10,7 @@ async def init_app():
     app = web.Application(
         middlewares=[
             cors_middleware(
-                origins=(ENVIRONMENT['headers'].get('origin'),),
-                allow_credentials=True,
-                allow_headers=DEFAULT_ALLOW_HEADERS,
+                allow_all=True
             )
         ]
     )
@@ -26,3 +24,15 @@ async def init_app():
     setup_routers(app)
 
     return app
+
+
+def main():
+    app = init_app()
+
+    web.run_app(app,
+                host=ENVIRONMENT['api'].get('host'),
+                port=ENVIRONMENT['api'].get('port'))
+
+
+if __name__ == "__main__":
+    main()

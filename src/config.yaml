@@ -1,11 +1,8 @@
-token:
-    key: Cj{U8]q)n}xQ7c(01;uS
-    algorithm: HS256
-    header: productivity
-    exp: 3600
 api:
     version: v1
     host: localhost
     port: 8080
 headers:
-    origin: https://productivity.researchdev.xyz
+    origin:
+        - http://localhost:4200
+        - http://localhost:8080
