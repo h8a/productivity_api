@@ -1,3 +1,4 @@
+import re
 from aiohttp import web
 from aiohttp_middlewares import cors_middleware
 from aiohttp_middlewares.cors import DEFAULT_ALLOW_HEADERS
@@ -10,7 +11,7 @@ async def init_app():
     app = web.Application(
         middlewares=[
             cors_middleware(
-                origins=(ENVIRONMENT['headers'].get('origin'),),
+                origins=[re.compile(r"ĥttps?\:\/\/"+ENVIRONMENT['headers'].get('origin'))],
                 allow_credentials=True,
                 allow_headers=DEFAULT_ALLOW_HEADERS,
             )
