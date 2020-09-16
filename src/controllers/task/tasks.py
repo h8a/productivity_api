@@ -1,5 +1,59 @@
 from aiohttp import web
-from datetime import datetime
+from datetime import datetime, timedelta
+
+
+
+async def tasks_last_week(request: web.Request) -> web.json_response:
+
+    tasks = request.app['db']['tasks']
+
+    week_end = datetime.now()
+    week_start = week_end - timedelta(days=7)
+
+    last_week = []
+    for task in tasks:
+        create = datetime.strptime(task.get('create_date'), '%Y-%m-%d %H:%M:%S')
+        if week_start < create < week_end:
+            last_week.append(task)
+
+    return web.json_response({
+        'ok': True,
+        'msg': 'Succefully',
+        'tasks': last_week,
+    }, status=200)
+
+async def pending_tasks(request: web.Request) -> web.json_response:
+
+
+    tasks = request.app['db']['tasks']
+
+    tasks_list = [] 
+    for task in tasks:
+        if task.get('status_task') != 'stop':
+            tasks_list.append(task)
+
+
+    return web.json_response({
+        'ok': True,
+        'msg': 'Succefully',
+        'tasks': tasks_list,
+    }, status=200)
+
+
+async def complete_tasks(request: web.Request) -> web.json_response:
+
+    tasks = request.app['db']['tasks']
+
+    tasks_list = [] 
+    for task in tasks:
+        if task.get('status_task') == 'stop':
+            tasks_list.append(task)
+
+    return web.json_response({
+        'ok': True,
+        'msg': 'Succefully',
+        'tasks': tasks_list,
+    }, status=200)
 
 
 async def task_type(request: web.Request) -> web.json_response:
