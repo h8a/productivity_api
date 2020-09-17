@@ -1,6 +1,6 @@
 from aiohttp import web
 from aiohttp_middlewares import cors_middleware
-from aiohttp_middlewares.cors import DEFAULT_ALLOW_HEADERS
+from aiohttp_middlewares.cors import DEFAULT_ALLOW_HEADERS, DEFAULT_ALLOW_METHODS
 from db import init_db, close_db, generate_random_data
 from router import setup_routers
 from settings import ENVIRONMENT
@@ -10,7 +10,11 @@ async def init_app():
     app = web.Application(
         middlewares=[
             cors_middleware(
-                allow_all=True
+                # allow_all=True
+                origins=["http://localhost:8080", "http://localhost:4200"],
+                allow_headers=('Access-Control-Allow-Origin', 'Access-Control-Allow-Headers')+DEFAULT_ALLOW_HEADERS,
+                allow_methods=DEFAULT_ALLOW_METHODS,
+                allow_credentials=True,
             )
         ]
     )
