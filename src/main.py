@@ -11,7 +11,7 @@ async def init_app():
         middlewares=[
             cors_middleware(
                 # allow_all=True
-                origins=["http://localhost:8080", "http://localhost:4200"],
+                origins=ENVIRONMENT['headers']['origin'],
                 allow_headers=('Access-Control-Allow-Origin', 'Access-Control-Allow-Headers')+DEFAULT_ALLOW_HEADERS,
                 allow_methods=DEFAULT_ALLOW_METHODS,
                 allow_credentials=True,
